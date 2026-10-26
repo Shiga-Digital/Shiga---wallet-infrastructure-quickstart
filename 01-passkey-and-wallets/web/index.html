@@ -1,23 +1,63 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Passkey registration and wallets - Shiga</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="/vendor/simplewebauthn.js" defer></script>
-  <script src="/app.js" type="module"></script>
-</head>
-<body>
-<main>
-  <header><p class="eyebrow">SHIGA - WALLET INFRASTRUCTURE</p><h1>Passkey registration and wallets</h1><p>A small, runnable example of the HTTP API. Approvals happen on your device; the API key stays on the server.</p></header>
-  <p id="notice" role="status" aria-live="polite">Loading your session...</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Passkey registration and wallets - Shiga</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/vendor/simplewebauthn.js" defer></script>
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">SHIGA - WALLET INFRASTRUCTURE</p>
+        <h1>Passkey registration and wallets</h1>
+        <p>
+          A small, runnable example of the HTTP API. Approvals happen on your device; the API key
+          stays on the server.
+        </p>
+      </header>
+      <p id="notice" role="status" aria-live="polite">Loading your session...</p>
 
-  <section><h2>1. Create a customer</h2><form id="customer-form"><label>Your customer reference<input id="reference" required maxlength="100" placeholder="customer-001"></label><button type="submit">Create customer</button></form></section>
-  <section><h2>2. Register a passkey and provision wallets</h2><p>Your browser will ask you to create an ES256 passkey. The server verifies it and provisions the customer's wallets.</p><div class="actions"><button id="register" type="button">Register passkey</button><button id="provision" type="button" class="secondary">Retry wallet provisioning</button><a href="/api/customer-context">Save public customer context for sample 02</a></div></section>
+      <section>
+        <h2>1. Create a customer</h2>
+        <form id="customer-form">
+          <label
+            >Your customer reference<input
+              id="reference"
+              required
+              maxlength="100"
+              placeholder="customer-001" /></label
+          ><button type="submit">Create customer</button>
+        </form>
+      </section>
+      <section>
+        <h2>2. Register a passkey and provision wallets</h2>
+        <p>
+          Your browser will ask you to create an ES256 passkey. The server verifies it and
+          provisions the customer's wallets.
+        </p>
+        <div class="actions">
+          <button id="register" type="button">Register passkey</button
+          ><button id="provision" type="button" class="secondary">Retry wallet provisioning</button
+          ><a href="/api/customer-context">Save public customer context for sample 02</a>
+        </div>
+      </section>
 
-  <section><h2>Receive funds</h2><p>Use the receiving addresses below. A detected deposit is still in flight; only deposit.confirmed means final.</p><button id="balances" type="button" class="secondary">Refresh balances</button><h3>Customer and wallet addresses</h3><pre id="wallets" tabindex="0"></pre><h3>Balances</h3><pre id="balance-output" tabindex="0">No balance request yet.</pre></section>
-  <footer>Local sample - pilot API - plain TypeScript and browser JavaScript</footer>
-</main>
-</body>
+      <section>
+        <h2>Receive funds</h2>
+        <p>
+          Use the receiving addresses below. A detected deposit is still in flight; only
+          deposit.confirmed means final.
+        </p>
+        <button id="balances" type="button" class="secondary">Refresh balances</button>
+        <h3>Customer and wallet addresses</h3>
+        <pre id="wallets" tabindex="0"></pre>
+        <h3>Balances</h3>
+        <pre id="balance-output" tabindex="0">No balance request yet.</pre>
+      </section>
+      <footer>Local sample - pilot API - plain TypeScript and browser JavaScript</footer>
+    </main>
+  </body>
 </html>

@@ -26,17 +26,37 @@ export function createApp(config: Config, store: Store, api: Api = createApi(con
   app.use(express.json({ limit: '64kb' }));
   app.use('/api', sessions(store, config));
   app.use('/api', (req, res, next) => {
-    if (req.method === 'POST' && session(res).data.pending?.state === 'submitting') return next(new HttpError(409, 'approval_in_progress', 'Wait for the active approval to finish, then check its status.'));
+    if (req.method === 'POST' && session(res).data.pending?.state === 'submitting')
+      return next(
+        new HttpError(
+          409,
+          'approval_in_progress',
+          'Wait for the active approval to finish, then check its status.',
+        ),
+      );
     next();
   });
   app.get('/api/state', (_req, res) => {
     const data = session(res).data;
-    res.json({ customerId: data.customerId, credentialId: data.credential?.id, wallets: data.wallets ?? [], pending: data.pending && { id: data.pending.id, state: data.pending.state, intent: data.pending.intent } });
+    res.json({
+      customerId: data.customerId,
+      credentialId: data.credential?.id,
+      wallets: data.wallets ?? [],
+      pending: data.pending && {
+        id: data.pending.id,
+        state: data.pending.state,
+        intent: data.pending.intent,
+      },
+    });
   });
   app.get('/api/balances', async (_req, res) => {
     const data = session(res).data;
     if (!data.customerId) return res.status(409).json({ error: 'customer_required' });
-    res.json(await api('/v1/wallets/balances?customerId=' + encodeURIComponent(data.customerId), { customerId: data.customerId }));
+    res.json(
+      await api('/v1/wallets/balances?customerId=' + encodeURIComponent(data.customerId), {
+        customerId: data.customerId,
+      }),
+    );
   });
   app.use('/api', customerRoutes(api, store));
   app.use('/api', passkeyRoutes(api, store, config));
@@ -45,18 +65,32 @@ export function createApp(config: Config, store: Store, api: Api = createApi(con
   app.use('/api', statusRoutes(api, store));
   app.get('/api/events', (_req, res) => {
     const current = session(res);
-    res.json(inbox.observations().filter(event => {
-      if (event.event_type.startsWith('payment.')) return typeof event.data.payment_id === 'string' && store.ownsPayment(event.data.payment_id, current.id);
-      return Boolean(current.data.customerId) && event.customer_id === current.data.customerId;
-    }));
+    res.json(
+      inbox.observations().filter((event) => {
+        if (event.event_type.startsWith('payment.'))
+          return (
+            typeof event.data.payment_id === 'string' &&
+            store.ownsPayment(event.data.payment_id, current.id)
+          );
+        return Boolean(current.data.customerId) && event.customer_id === current.data.customerId;
+      }),
+    );
   });
   const owner = (res: express.Response) => session(res).id;
   app.use('/api', createPaymentRoutes(api, store, owner, true));
   app.use('/api', trackPaymentRoutes(api, store, owner));
   const require = createRequire(import.meta.url);
-  const browserBundle = resolve(dirname(require.resolve('@simplewebauthn/browser')), '../dist/bundle/index.umd.min.js');
+  const browserBundle = resolve(
+    dirname(require.resolve('@simplewebauthn/browser')),
+    '../dist/bundle/index.umd.min.js',
+  );
   app.get('/vendor/simplewebauthn.js', (_req, res) => res.sendFile(browserBundle));
-  app.use(express.static(fileURLToPath(new URL('../web', import.meta.url)), { index: 'index.html', etag: false }));
+  app.use(
+    express.static(fileURLToPath(new URL('../web', import.meta.url)), {
+      index: 'index.html',
+      etag: false,
+    }),
+  );
   app.use(errors);
   return { app, inbox };
 }

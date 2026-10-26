@@ -6,13 +6,13 @@ Runnable companion to [Setup and Verification](https://github.com/Shiga-Digital/
 
 Use Node.js 24.13+ in the Node 24 series. Run commands from this sample folder; it can also be copied out and run independently.
 
-~~~sh
+```sh
 cp .env.example .env
 npm install
 npm run dev
-~~~
+```
 
-Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm.cmd if npm.ps1 is blocked. Checks: npm run typecheck, npm run lint, npm test. Tests use local requests and synthetic credentials, with no real API calls.
+Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm.cmd if npm.ps1 is blocked. Checks: npm run format:check, npm run typecheck, npm run lint, npm test. Use npm run format or npm run lint:fix to apply fixes. Tests use local requests and synthetic credentials, with no real API calls.
 
 ## Configure and receive
 
@@ -39,3 +39,5 @@ Inspect inbox and observations using a SQLite client. There is no event-list HTT
 ## Change log
 
 - 2026-10-26: Initial raw-body verification, timestamp checks, persistent atomic deduplication and crash recovery example.
+
+- 2026-10-26: Added standalone Prettier formatting and ESLint configuration checks.

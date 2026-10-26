@@ -6,19 +6,19 @@ Runnable companion to [Sending Payments](https://github.com/Shiga-Digital/Wallet
 
 Use Node.js 24.13+ in the Node 24 series. Run commands from this sample folder; it can also be copied out and run independently.
 
-~~~sh
+```sh
 cp .env.example .env
 npm install
 npm run dev
-~~~
+```
 
-Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm.cmd if npm.ps1 is blocked. Checks: npm run typecheck, npm run lint, npm test. Tests use local requests and synthetic credentials, with no real API calls.
+Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm.cmd if npm.ps1 is blocked. Checks: npm run format:check, npm run typecheck, npm run lint, npm test. Use npm run format or npm run lint:fix to apply fixes. Tests use local requests and synthetic credentials, with no real API calls.
 
 ## Before starting
 
 You need a funded, provisioned, single-signer wallet and its passkey on this device. Set SHIGA_API_KEY and CUSTOMER_CONTEXT_FILE in .env. Put public customer metadata in .data/customer-context.json:
 
-~~~json
+```json
 {
   "customerId": "your-customer-id",
   "credential": {
@@ -26,17 +26,19 @@ You need a funded, provisioned, single-signer wallet and its passkey on this dev
     "publicKey": "base64url-verified-COSE-key",
     "counter": 0
   },
-  "wallets": [{
-    "moduleId": "evm_erc4337",
-    "chain": "evm",
-    "address": "0x-your-provisioned-safe-address",
-    "status": "created"
-  }],
+  "wallets": [
+    {
+      "moduleId": "evm_erc4337",
+      "chain": "evm",
+      "address": "0x-your-provisioned-safe-address",
+      "status": "created"
+    }
+  ],
   "passkeyPublicKey": { "x": "0x-32-byte-coordinate", "y": "0x-32-byte-coordinate" },
   "rpId": "localhost",
   "origin": "http://localhost:3000"
 }
-~~~
+```
 
 Use your server records or sample 01's public context export. This folder imports no sample 01 source. The origin and RP id must match the enrolled credential. To move from 01 to 02, stop 01 and keep port 3000 and the same browser origin.
 
@@ -64,3 +66,5 @@ Status reconciliation paginates the registry and matches customerId and the exac
 ## Change log
 
 - 2026-10-26: Initial intent-bound transfer example with real P-256 assertions, race/replay regressions and confirmation handling.
+
+- 2026-10-26: Added standalone Prettier formatting and ESLint configuration checks.
