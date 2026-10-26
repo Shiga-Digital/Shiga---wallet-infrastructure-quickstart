@@ -6,10 +6,15 @@ const config = readConfig(3000, true);
 const store = new Store(config.databasePath);
 const { app, inbox } = createApp(config, store);
 const stopWorker = inbox.startWorker();
-const server = app.listen(config.port, '127.0.0.1', () => console.log('Sample ready at ' + config.origin));
+const server = app.listen(config.port, '127.0.0.1', () =>
+  console.log('Sample ready at ' + config.origin),
+);
 const stop = () => {
   stopWorker();
-  server.close(() => { store.close(); process.exit(0); });
+  server.close(() => {
+    store.close();
+    process.exit(0);
+  });
 };
 process.once('SIGINT', stop);
 process.once('SIGTERM', stop);

@@ -1,28 +1,149 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wallet integration quickstart - Shiga</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="/vendor/simplewebauthn.js" defer></script>
-  <script src="/app.js" type="module"></script>
-</head>
-<body>
-<main>
-  <header><p class="eyebrow">SHIGA - WALLET INFRASTRUCTURE</p><h1>Wallet integration quickstart</h1><p>A small, runnable example of the HTTP API. Approvals happen on your device; the API key stays on the server.</p></header>
-  <p id="notice" role="status" aria-live="polite">Loading your session...</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wallet integration quickstart - Shiga</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/vendor/simplewebauthn.js" defer></script>
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">SHIGA - WALLET INFRASTRUCTURE</p>
+        <h1>Wallet integration quickstart</h1>
+        <p>
+          A small, runnable example of the HTTP API. Approvals happen on your device; the API key
+          stays on the server.
+        </p>
+      </header>
+      <p id="notice" role="status" aria-live="polite">Loading your session...</p>
 
-  <section><h2>1. Create a customer</h2><form id="customer-form"><label>Your customer reference<input id="reference" required maxlength="100" placeholder="customer-001"></label><button type="submit">Create customer</button></form></section>
-  <section><h2>2. Register a passkey and provision wallets</h2><p>Your browser will ask you to create an ES256 passkey. The server verifies it and provisions the customer's wallets.</p><div class="actions"><button id="register" type="button">Register passkey</button><button id="provision" type="button" class="secondary">Retry wallet provisioning</button><a href="/api/customer-context">Save public customer context for sample 02</a></div></section>
+      <section>
+        <h2>1. Create a customer</h2>
+        <form id="customer-form">
+          <label
+            >Your customer reference<input
+              id="reference"
+              required
+              maxlength="100"
+              placeholder="customer-001" /></label
+          ><button type="submit">Create customer</button>
+        </form>
+      </section>
+      <section>
+        <h2>2. Register a passkey and provision wallets</h2>
+        <p>
+          Your browser will ask you to create an ES256 passkey. The server verifies it and
+          provisions the customer's wallets.
+        </p>
+        <div class="actions">
+          <button id="register" type="button">Register passkey</button
+          ><button id="provision" type="button" class="secondary">Retry wallet provisioning</button
+          ><a href="/api/customer-context">Save public customer context for sample 02</a>
+        </div>
+      </section>
 
-  <section><h2>Receive funds</h2><p>Use the receiving addresses below. A detected deposit is still in flight; only deposit.confirmed means final.</p><button id="balances" type="button" class="secondary">Refresh balances</button><h3>Customer and wallet addresses</h3><pre id="wallets" tabindex="0"></pre><h3>Balances</h3><pre id="balance-output" tabindex="0">No balance request yet.</pre></section>
+      <section>
+        <h2>Receive funds</h2>
+        <p>
+          Use the receiving addresses below. A detected deposit is still in flight; only
+          deposit.confirmed means final.
+        </p>
+        <button id="balances" type="button" class="secondary">Refresh balances</button>
+        <h3>Customer and wallet addresses</h3>
+        <pre id="wallets" tabindex="0"></pre>
+        <h3>Balances</h3>
+        <pre id="balance-output" tabindex="0">No balance request yet.</pre>
+      </section>
 
-  <section><h2>Send a payment</h2><form id="quote-form"><div class="grid"><label>Wallet module<select id="module"><option value="evm_erc4337">EVM (ERC-4337)</option><option>bitcoin</option><option>spark</option><option>solana</option><option>tron</option><option>ton</option></select></label><label>Chain<input id="chain" value="base" required></label><label>Asset<input id="token" value="usdt" required></label><label>Amount in display units<input id="amount" placeholder="0.01" required inputmode="decimal"></label></div><label>Recipient address<input id="recipient" required autocomplete="off"></label><details><summary>Non-EVM asset selector</summary><label>Solana tokenMint (optional)<input id="token-mint"></label><label>TON tokenRoot (optional)<input id="token-root"></label></details><button type="submit">1. Get fee quote</button></form><pre id="quote-output" tabindex="0">Get a quote before preparing the payment.</pre><div class="actions"><button id="prepare" type="button" disabled>2. Prepare quoted payment</button><button id="approve" type="button" disabled>3. Approve with passkey</button><button id="status" type="button" class="secondary">Check confirmation</button></div><pre id="payment-output" tabindex="0">Only confirmed means the payment is complete.</pre></section>
+      <section>
+        <h2>Send a payment</h2>
+        <form id="quote-form">
+          <div class="grid">
+            <label
+              >Wallet module<select id="module">
+                <option value="evm_erc4337">EVM (ERC-4337)</option>
+                <option>bitcoin</option>
+                <option>spark</option>
+                <option>solana</option>
+                <option>tron</option>
+                <option>ton</option>
+              </select></label
+            ><label>Chain<input id="chain" value="base" required /></label
+            ><label>Asset<input id="token" value="usdt" required /></label
+            ><label
+              >Amount in display units<input
+                id="amount"
+                placeholder="0.01"
+                required
+                inputmode="decimal"
+            /></label>
+          </div>
+          <label>Recipient address<input id="recipient" required autocomplete="off" /></label>
+          <details>
+            <summary>Non-EVM asset selector</summary>
+            <label>Solana tokenMint (optional)<input id="token-mint" /></label
+            ><label>TON tokenRoot (optional)<input id="token-root" /></label>
+          </details>
+          <button type="submit">1. Get fee quote</button>
+        </form>
+        <pre id="quote-output" tabindex="0">Get a quote before preparing the payment.</pre>
+        <div class="actions">
+          <button id="prepare" type="button" disabled>2. Prepare quoted payment</button
+          ><button id="approve" type="button" disabled>3. Approve with passkey</button
+          ><button id="status" type="button" class="secondary">Check confirmation</button>
+        </div>
+        <pre id="payment-output" tabindex="0">Only confirmed means the payment is complete.</pre>
+      </section>
 
-  <section><h2>Create a payment link</h2><p>Requires a default payment-links project. This creates receiving addresses; it does not debit the customer's wallet.</p><form id="link-form"><label>Invoice reference<input id="link-reference" required placeholder="invoice-001"></label><div class="grid"><label>Network family<select id="link-family"><option>evm</option><option>bitcoin</option><option>spark</option><option>solana</option><option>tron</option><option>ton</option></select></label><label>Asset<input id="link-asset" value="USDT" required></label><label>Expected amount<input id="link-amount" required placeholder="1" inputmode="decimal"></label></div><label>Settlement destination<input id="link-destination" required></label><div class="actions"><button type="submit">Create payment</button><button id="link-new" class="secondary" type="button">Start another payment</button><button id="link-status" class="secondary" type="button">Refresh payment status</button></div></form><pre id="link-output" tabindex="0">No payment link created yet.</pre></section>
-  <section><h2>Webhook observations</h2><p>Register /webhooks/wallet through your public HTTPS tunnel, then subscribe to exact event names. Events are verified and stored before acknowledgement.</p><button id="events" class="secondary" type="button">Refresh received events</button><pre id="event-output" tabindex="0">No events loaded yet.</pre></section>
-  <footer>Local sample - pilot API - plain TypeScript and browser JavaScript</footer>
-</main>
-</body>
+      <section>
+        <h2>Create a payment link</h2>
+        <p>
+          Requires a default payment-links project. This creates receiving addresses; it does not
+          debit the customer's wallet.
+        </p>
+        <form id="link-form">
+          <label
+            >Invoice reference<input id="link-reference" required placeholder="invoice-001"
+          /></label>
+          <div class="grid">
+            <label
+              >Network family<select id="link-family">
+                <option>evm</option>
+                <option>bitcoin</option>
+                <option>spark</option>
+                <option>solana</option>
+                <option>tron</option>
+                <option>ton</option>
+              </select></label
+            ><label>Asset<input id="link-asset" value="USDT" required /></label
+            ><label
+              >Expected amount<input id="link-amount" required placeholder="1" inputmode="decimal"
+            /></label>
+          </div>
+          <label>Settlement destination<input id="link-destination" required /></label>
+          <div class="actions">
+            <button type="submit">Create payment</button
+            ><button id="link-new" class="secondary" type="button">Start another payment</button
+            ><button id="link-status" class="secondary" type="button">
+              Refresh payment status
+            </button>
+          </div>
+        </form>
+        <pre id="link-output" tabindex="0">No payment link created yet.</pre>
+      </section>
+      <section>
+        <h2>Webhook observations</h2>
+        <p>
+          Register /webhooks/wallet through your public HTTPS tunnel, then subscribe to exact event
+          names. Events are verified and stored before acknowledgement.
+        </p>
+        <button id="events" class="secondary" type="button">Refresh received events</button>
+        <pre id="event-output" tabindex="0">No events loaded yet.</pre>
+      </section>
+      <footer>Local sample - pilot API - plain TypeScript and browser JavaScript</footer>
+    </main>
+  </body>
 </html>

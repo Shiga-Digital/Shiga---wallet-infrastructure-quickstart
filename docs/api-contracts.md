@@ -4,18 +4,18 @@
 
 The baseline is wallet-infrastructure main at ac35e1b35a87dc1e32b9c9e489561aa9efb193ce, verified against its work-SSH remote on 2026-10-26. The documentation guides/OpenAPI were cross-checked with api-gateway, signing-gateway transaction binding and webhook-fanout signing. No treasury or delegate endpoints are used.
 
-| Request | Contract |
-| --- | --- |
-| POST /v1/customers | reference; store data.id |
-| POST /v1/wallets/provision | x-customer-id; passkeyRegistration: credentialId, base64url COSE credentialPublicKey, rpId, origins |
-| GET /v1/wallets/balances | customerId query and customer header |
-| POST /v1/quotes | moduleId, txParams: chain, display-unit amount, recipientAddress, token; sender resolved by API |
-| POST /v1/userops/prepare | chain, token, to, amount, stored safeAddress, passkeyPublicKey |
-| POST /v1/userops/{hash}/signatures | passkeyPublicKey, passkeyData; customer header |
-| POST /v1/transactions | Non-EVM moduleId, exact prepared txParams, passkeyData; customer header |
-| GET /v1/transactions | Paginate by cursor; match reference and customerId; preserve outcomeUndetermined |
-| POST /v1/payments | reference, destinations by family, required stable Idempotency-Key |
-| GET /v1/payments/{id} | Preserve payment state and settlement attempts |
+| Request                            | Contract                                                                                            |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------- |
+| POST /v1/customers                 | reference; store data.id                                                                            |
+| POST /v1/wallets/provision         | x-customer-id; passkeyRegistration: credentialId, base64url COSE credentialPublicKey, rpId, origins |
+| GET /v1/wallets/balances           | customerId query and customer header                                                                |
+| POST /v1/quotes                    | moduleId, txParams: chain, display-unit amount, recipientAddress, token; sender resolved by API     |
+| POST /v1/userops/prepare           | chain, token, to, amount, stored safeAddress, passkeyPublicKey                                      |
+| POST /v1/userops/{hash}/signatures | passkeyPublicKey, passkeyData; customer header                                                      |
+| POST /v1/transactions              | Non-EVM moduleId, exact prepared txParams, passkeyData; customer header                             |
+| GET /v1/transactions               | Paginate by cursor; match reference and customerId; preserve outcomeUndetermined                    |
+| POST /v1/payments                  | reference, destinations by family, required stable Idempotency-Key                                  |
+| GET /v1/payments/{id}              | Preserve payment state and settlement attempts                                                      |
 
 Successful envelopes are { data, status, success: true }; the server unwraps data. Errors retain a safe code and request_id without exposing arbitrary upstream detail.
 

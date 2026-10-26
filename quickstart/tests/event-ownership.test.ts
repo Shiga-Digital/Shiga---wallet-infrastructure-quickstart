@@ -1,4 +1,3 @@
-
 import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../server/app.js';
@@ -15,15 +14,43 @@ it('requires payment ownership even when a session has no customer or an event n
     store.ownPayment('private-payment', owner.id);
     const unrelated = store.newSession();
     store.saveSession(unrelated.id, { customerId: 'c1' });
-    for (const [id, customer] of [['payment-event-1', undefined], ['payment-event-2', 'c1']]) {
-      const event = { event_id: id, event_type: 'payment.created', business_id: 'b1', project_id: 'p1', customer_id: customer, occurred_at: '2026-10-26T10:00:00Z', data: { payment_id: 'private-payment', reference: 'private-invoice', amount: '10' } };
+    for (const [id, customer] of [
+      ['payment-event-1', undefined],
+      ['payment-event-2', 'c1'],
+    ]) {
+      const event = {
+        event_id: id,
+        event_type: 'payment.created',
+        business_id: 'b1',
+        project_id: 'p1',
+        customer_id: customer,
+        occurred_at: '2026-10-26T10:00:00Z',
+        data: { payment_id: 'private-payment', reference: 'private-invoice', amount: '10' },
+      };
       inbox.accept(Buffer.from(JSON.stringify(event)), String(id), event.event_type);
       inbox.processOne();
     }
     expect((await request(app).get('/api/events').set('Host', 'localhost:3000')).body).toEqual([]);
-    expect((await request(app).get('/api/events').set('Host', 'localhost:3000').set('Cookie', 'shiga_3000=' + unrelated.token)).body).toEqual([]);
-    expect((await request(app).get('/api/events').set('Host', 'localhost:3000').set('Cookie', 'shiga_3000=' + owner.token)).body).toHaveLength(2);
-  } finally { store.close(); fixture.cleanup(); }
+    expect(
+      (
+        await request(app)
+          .get('/api/events')
+          .set('Host', 'localhost:3000')
+          .set('Cookie', 'shiga_3000=' + unrelated.token)
+      ).body,
+    ).toEqual([]);
+    expect(
+      (
+        await request(app)
+          .get('/api/events')
+          .set('Host', 'localhost:3000')
+          .set('Cookie', 'shiga_3000=' + owner.token)
+      ).body,
+    ).toHaveLength(2);
+  } finally {
+    store.close();
+    fixture.cleanup();
+  }
 });
 
 describe('session compare-and-swap', () => {
@@ -38,6 +65,8 @@ describe('session compare-and-swap', () => {
       Object.assign(stale, { pending: { state: 'prepared' } });
       expect(() => store.saveSession(created.id, stale)).toThrow('Another request changed');
       expect(store.readSession(created.id)).toMatchObject({ pending: { state: 'uncertain' } });
-    } finally { store.close(); }
+    } finally {
+      store.close();
+    }
   });
 });

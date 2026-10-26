@@ -15,9 +15,26 @@
   "scripts": {
     "dev": "npm run dev --workspace quickstart",
     "typecheck": "npm run typecheck --workspaces",
-    "lint": "npm run lint --workspaces",
+    "lint": "eslint . --max-warnings=0",
     "test": "npm run test --workspaces",
-    "check": "node scripts/check-copies.mjs && npm run typecheck && npm run lint && npm test",
-    "check:standalone": "node scripts/check-standalone.mjs"
+    "check": "npm run check:copies && npm run format:check && npm run typecheck && npm run lint && npm test",
+    "check:standalone": "node scripts/check-standalone.mjs",
+    "lint:fix": "eslint . --fix --max-warnings=0",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "check:copies": "node scripts/check-copies.mjs",
+    "prepare": "husky",
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.13.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.0"
   }
 }
