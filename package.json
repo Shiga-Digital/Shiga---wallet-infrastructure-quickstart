@@ -1,0 +1,23 @@
+{
+  "name": "shiga-wallet-infrastructure-quickstart",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.13.0 <25"
+  },
+  "workspaces": [
+    "01-passkey-and-wallets",
+    "02-send-payment",
+    "03-webhook-consumer",
+    "04-payment-link",
+    "quickstart"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace quickstart",
+    "typecheck": "npm run typecheck --workspaces",
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspaces",
+    "check": "node scripts/check-copies.mjs && npm run typecheck && npm run lint && npm test",
+    "check:standalone": "node scripts/check-standalone.mjs"
+  }
+}
