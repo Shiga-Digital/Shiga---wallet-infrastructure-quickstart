@@ -2,6 +2,8 @@
 
 Small, runnable TypeScript integrations for Shiga Wallet Infrastructure. Each sample follows a guide, uses the HTTP API through plain fetch, and runs independently. A browser page appears only where a passkey needs one.
 
+Documentation: [docs.wallet.shiga.io](https://docs.wallet.shiga.io)
+
 | Sample                                                     | Journey                                                                | Browser |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------- | ------- |
 | [01-passkey-and-wallets](01-passkey-and-wallets/README.md) | Create customer, verify ES256 registration, provision wallets          | Yes     |
@@ -40,7 +42,7 @@ Every sample has its own .env.example. Configuration is loaded from that sample'
 | DATABASE_PATH                        | Local SQLite file; defaults to .data/sample.sqlite                                             |
 | PORT                                 | 3000 for browser samples, 3003 for webhooks, 3004 for payment links                            |
 
-Supply a test key with the scopes required by the sample. See the API operation's required scope in the linked reference docs. Configure a default payment-links project before using payment links. Register webhook endpoints through the API or dashboard.
+Supply a test key with the scopes required by the sample. See the API operation's required scope in the [API reference](https://docs.wallet.shiga.io/docs/api-reference). Configure a default payment-links project before using payment links. Register webhook endpoints through the API or dashboard.
 
 Passkeys need a secure browser origin. http://localhost works for development. For HTTPS, set RP_ID and ORIGIN before registration and use a reverse proxy or tunnel to the loopback server. Keep the same origin when moving a registered credential from sample 01 to 02; run them sequentially on port 3000.
 
