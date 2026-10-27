@@ -11,12 +11,12 @@ Wallet Infrastructure gives each of your customers passkey-secured wallets on EV
 
 The documentation is the source of truth. Before writing code for an area, read its page as Markdown, and never invent endpoints, fields, events or error codes.
 
-| Need                          | Fetch                                                                               |
-| ----------------------------- | ----------------------------------------------------------------------------------- |
-| Index of every page           | `https://wallet-micro-service-docs.vercel.app/llms.txt`                             |
-| One page as Markdown          | `https://wallet-micro-service-docs.vercel.app/llms.mdx/docs/<page path>/content.md` |
-| Everything, including the API | `https://wallet-micro-service-docs.vercel.app/llms-full.txt`                        |
-| OpenAPI spec                  | `https://wallet-micro-service-docs.vercel.app/openapi.json`                         |
+| Need                          | Fetch                                                               |
+| ----------------------------- | ------------------------------------------------------------------- |
+| Index of every page           | `https://docs.wallet.shiga.io/llms.txt`                             |
+| One page as Markdown          | `https://docs.wallet.shiga.io/llms.mdx/docs/<page path>/content.md` |
+| Everything, including the API | `https://docs.wallet.shiga.io/llms-full.txt`                        |
+| OpenAPI spec                  | `https://docs.wallet.shiga.io/openapi.json`                         |
 
 Pages by task (prefix each with `/llms.mdx/docs/guides/` and suffix `/content.md`):
 
