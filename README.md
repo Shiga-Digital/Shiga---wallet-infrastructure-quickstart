@@ -60,11 +60,11 @@ Each agent picks up its file when you work in this repository. To use the guidan
 base=https://raw.githubusercontent.com/Shiga-Digital/Shiga---wallet-infrastructure-quickstart/main
 mkdir -p .claude/skills/shiga-wallet-integration
 curl -fsSL "$base/.claude/skills/shiga-wallet-integration/SKILL.md" -o .claude/skills/shiga-wallet-integration/SKILL.md
-curl -fsSL "$base/AGENTS.md" -o AGENTS.md
-curl -fsSL "$base/GEMINI.md" -o GEMINI.md
+grep -qs '^# Shiga Wallet Infrastructure integration' AGENTS.md || { echo; curl -fsSL "$base/AGENTS.md"; } >> AGENTS.md
+grep -qsx '@./AGENTS.md' GEMINI.md || printf '\n@./AGENTS.md\n' >> GEMINI.md
 ```
 
-If your project already has an AGENTS.md, append the downloaded content to it instead of replacing it.
+AGENTS.md and GEMINI.md are appended to, never replaced, so your existing instructions stay. Running the commands again adds nothing.
 
 ## Development
 
