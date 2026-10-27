@@ -16,7 +16,7 @@ Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm
 
 ## Configure
 
-Set SHIGA_API_KEY to your pilot key and WEBHOOK_SECRET to your registered endpoint's signing secret. Keep RP_ID=localhost, ORIGIN=http://localhost:3000 and PORT=3000 for local passkeys. Non-EVM sends need SHIGA_BUSINESS_ID and SHIGA_PROJECT_ID. Only the payment-link section needs a default payment-links project.
+Set SHIGA_API_KEY to your sk_test_ key and WEBHOOK_SECRET to your registered endpoint's signing secret. Keep RP_ID=localhost, ORIGIN=http://localhost:3000 and PORT=3000 for local passkeys. Non-EVM sends need SHIGA_BUSINESS_ID and SHIGA_PROJECT_ID. Only the payment-link section needs a default payment-links project.
 
 Open http://localhost:3000:
 

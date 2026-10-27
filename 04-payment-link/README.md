@@ -16,9 +16,9 @@ Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm
 
 ## Configure
 
-Set SHIGA_API_KEY to a pilot key with payment_links:write and payment_links:read. Your business needs a default payment-links project, configured in the dashboard; otherwise the API may return 409. PORT defaults to 3004 and ORIGIN to http://localhost:3004.
+Set SHIGA_API_KEY to an sk_test_ key with payment_links:write and payment_links:read. Your business needs a default payment-links project, configured in the dashboard; otherwise the API may return 409. PORT defaults to 3004 and ORIGIN to http://localhost:3004.
 
-This backend-only loopback service exposes POST /api/payment-links and GET /api/payment-links/{id}. Writes require an Origin header matching ORIGIN. Your pilot API key stays on the server.
+This backend-only loopback service exposes POST /api/payment-links and GET /api/payment-links/{id}. Writes require an Origin header matching ORIGIN. Your API key stays on the server.
 
 Create a payment from PowerShell:
 

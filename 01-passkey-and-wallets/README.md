@@ -16,7 +16,7 @@ Edit .env before starting. In PowerShell use Copy-Item .env.example .env and npm
 
 ## Try it
 
-Set SHIGA_API_KEY to your pilot key. Leave RP_ID=localhost and ORIGIN=http://localhost:3000 for development. Open http://localhost:3000.
+Set SHIGA_API_KEY to your sk_test_ key. Leave RP_ID=localhost and ORIGIN=http://localhost:3000 for development. Open http://localhost:3000.
 
 1. Enter your customer reference and create the customer.
 2. Register a passkey when the browser prompts. The server requires ES256 and user verification, checks the one-time challenge, RP id and origin, and extracts the verified COSE key.

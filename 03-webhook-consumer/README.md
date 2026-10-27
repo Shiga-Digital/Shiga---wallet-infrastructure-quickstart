@@ -22,7 +22,7 @@ Only WEBHOOK_SECRET is required; this sample makes no outbound API requests. POR
 2. Register https://your-public-host/webhooks/wallet through the API or dashboard. Wallet Infrastructure refuses private/loopback callback URLs.
 3. Set WEBHOOK_SECRET to that endpoint's secret, shown once at registration, then restart.
 4. Subscribe to exact names: for example deposit.detected, deposit.confirmed, transaction.pending, transaction.success and transaction.failed. Wildcards are not accepted. Do not subscribe this example to recovery events.
-5. Trigger a pilot event. A verified event is committed to .data/sample.sqlite before returning 200.
+5. Trigger a test event. A verified event is committed to .data/sample.sqlite before returning 200.
 
 The callback is authenticated independently of the local Host/Origin guard. GET /health is local and requires Host: localhost:3003. Route the tunnel to the callback path.
 
