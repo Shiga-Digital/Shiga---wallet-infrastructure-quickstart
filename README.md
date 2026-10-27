@@ -44,6 +44,28 @@ Supply a test key with the scopes required by the sample. See the API operation'
 
 Passkeys need a secure browser origin. http://localhost works for development. For HTTPS, set RP_ID and ORIGIN before registration and use a reverse proxy or tunnel to the loopback server. Keep the same origin when moving a registered credential from sample 01 to 02; run them sequentially on port 3000.
 
+## Build with AI agents
+
+This repository carries the same integration guidance for each AI coding agent: the integration order, both signing paths, webhook verification and common mistakes.
+
+| Agent                                   | File                                                                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code                             | [.claude/skills/shiga-wallet-integration/SKILL.md](.claude/skills/shiga-wallet-integration/SKILL.md), or run `/shiga-wallet-integration` |
+| Codex, Cursor, GitHub Copilot, Windsurf | [AGENTS.md](AGENTS.md)                                                                                                                   |
+| Gemini CLI                              | [GEMINI.md](GEMINI.md), which imports AGENTS.md                                                                                          |
+
+Each agent picks up its file when you work in this repository. To use the guidance in your own project, copy the file into the same place there:
+
+```sh
+base=https://raw.githubusercontent.com/Shiga-Digital/Shiga---wallet-infrastructure-quickstart/main
+mkdir -p .claude/skills/shiga-wallet-integration
+curl -fsSL "$base/.claude/skills/shiga-wallet-integration/SKILL.md" -o .claude/skills/shiga-wallet-integration/SKILL.md
+grep -qs '^# Shiga Wallet Infrastructure integration' AGENTS.md || { echo; curl -fsSL "$base/AGENTS.md"; } >> AGENTS.md
+grep -qsx '@./AGENTS.md' GEMINI.md || printf '\n@./AGENTS.md\n' >> GEMINI.md
+```
+
+AGENTS.md and GEMINI.md are appended to, never replaced, so your existing instructions stay. Running the commands again adds nothing.
+
 ## Development
 
 To work on all samples together:
