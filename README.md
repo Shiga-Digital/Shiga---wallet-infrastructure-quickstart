@@ -44,17 +44,26 @@ Supply a test key with the scopes required by the sample. See the API operation'
 
 Passkeys need a secure browser origin. http://localhost works for development. For HTTPS, set RP_ID and ORIGIN before registration and use a reverse proxy or tunnel to the loopback server. Keep the same origin when moving a registered credential from sample 01 to 02; run them sequentially on port 3000.
 
-## Build with Claude Code
+## Build with AI agents
 
-This repository includes a Claude Code skill, [shiga-wallet-integration](.claude/skills/shiga-wallet-integration/SKILL.md), with the integration order, both signing paths, webhook verification and common mistakes. Claude Code loads it when you work in this repository, or run `/shiga-wallet-integration`.
+This repository carries the same integration guidance for each AI coding agent: the integration order, both signing paths, webhook verification and common mistakes.
 
-To use it in your own project, copy it into your project's `.claude/skills/`:
+| Agent                                   | File                                                                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code                             | [.claude/skills/shiga-wallet-integration/SKILL.md](.claude/skills/shiga-wallet-integration/SKILL.md), or run `/shiga-wallet-integration` |
+| Codex, Cursor, GitHub Copilot, Windsurf | [AGENTS.md](AGENTS.md)                                                                                                                   |
+| Gemini CLI                              | [GEMINI.md](GEMINI.md), which imports AGENTS.md                                                                                          |
+
+Each agent picks up its file when you work in this repository. To use the guidance in your own project, copy the file into the same place there:
 
 ```sh
+base=https://raw.githubusercontent.com/Shiga-Digital/Shiga---wallet-infrastructure-quickstart/main
 mkdir -p .claude/skills/shiga-wallet-integration
-curl -fsSL https://raw.githubusercontent.com/Shiga-Digital/Shiga---wallet-infrastructure-quickstart/main/.claude/skills/shiga-wallet-integration/SKILL.md \
-  -o .claude/skills/shiga-wallet-integration/SKILL.md
+curl -fsSL "$base/.claude/skills/shiga-wallet-integration/SKILL.md" -o .claude/skills/shiga-wallet-integration/SKILL.md
+curl -fsSL "$base/AGENTS.md" -o AGENTS.md
 ```
+
+If your project already has an AGENTS.md, append the downloaded content to it instead of replacing it.
 
 ## Development
 
