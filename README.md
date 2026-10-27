@@ -61,6 +61,7 @@ base=https://raw.githubusercontent.com/Shiga-Digital/Shiga---wallet-infrastructu
 mkdir -p .claude/skills/shiga-wallet-integration
 curl -fsSL "$base/.claude/skills/shiga-wallet-integration/SKILL.md" -o .claude/skills/shiga-wallet-integration/SKILL.md
 curl -fsSL "$base/AGENTS.md" -o AGENTS.md
+curl -fsSL "$base/GEMINI.md" -o GEMINI.md
 ```
 
 If your project already has an AGENTS.md, append the downloaded content to it instead of replacing it.

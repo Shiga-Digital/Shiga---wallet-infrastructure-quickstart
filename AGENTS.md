@@ -91,14 +91,14 @@ Mount the webhook route with a raw body parser before any global JSON parser. Re
 
 ## Working samples
 
-Runnable TypeScript for each step is in this repository. Read the matching sample before writing the same step.
+Runnable TypeScript for each step is in the quickstart repository, `https://github.com/Shiga-Digital/Shiga---wallet-infrastructure-quickstart`. Read the matching sample before writing the same step: use the local folder when working inside that repository, and otherwise read it on GitHub at `<repository>/tree/main/<folder>`.
 
-| Step                                     | Sample                    |
-| ---------------------------------------- | ------------------------- |
-| Customer, ES256 passkey, provisioning    | `01-passkey-and-wallets/` |
-| Quote, passkey approval, submit, confirm | `02-send-payment/`        |
-| Webhook verification and deduplication   | `03-webhook-consumer/`    |
-| Payment links                            | `04-payment-link/`        |
-| The whole journey in one app             | `quickstart/`             |
+| Step                                     | Folder                   |
+| ---------------------------------------- | ------------------------ |
+| Customer, ES256 passkey, provisioning    | `01-passkey-and-wallets` |
+| Quote, passkey approval, submit, confirm | `02-send-payment`        |
+| Webhook verification and deduplication   | `03-webhook-consumer`    |
+| Payment links                            | `04-payment-link`        |
+| The whole journey in one app             | `quickstart`             |
 
 Before going live, work through the Go-Live Checklist page.
