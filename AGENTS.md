@@ -72,7 +72,7 @@ The non-EVM challenge is the base64url SHA-256 of canonical JSON (keys sorted at
 
 ## Webhooks
 
-Verify `x-signature` (`t=<timestamp>,v1=<hex HMAC-SHA256 of "<timestamp>.<raw body>">`) against the raw body with a timing-safe compare, reject events older than 5 minutes, skip any `x-idempotency-key` already processed, store the event, respond `2xx`, then process. Delivery is at least once and unordered.
+Verify `x-signature` (`t=<timestamp>,v1=<hex HMAC-SHA256 of "<timestamp>.<raw body>">`) against the raw body with a timing-safe compare, reject it when the signed `t` is more than 5 minutes from now (never check the unsigned `x-timestamp`; each retry is signed afresh), record `x-idempotency-key` with one insert on a unique key so duplicates are skipped atomically, respond `2xx`, then process. Delivery is at least once and unordered.
 
 Mount the webhook route with a raw body parser before any global JSON parser. Respond `5xx` only when your own store failed: `5xx`, `408` and `429` are retried (up to 15 attempts, backoff capped at 1 hour), while any other `3xx` or `4xx` stops delivery for good. Subscribe by exact event name; wildcards are refused.
 

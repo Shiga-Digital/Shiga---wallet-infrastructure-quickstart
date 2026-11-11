@@ -33,7 +33,7 @@ Approvals are consumed before asynchronous verification/submission. The sample v
 
 ### Notifications
 
-Signatures are hex HMAC-SHA256(secret, timestamp + '.' + exact raw body), with header t=<seconds>,v1=<hex>. Signed time must equal x-timestamp; x-idempotency-key/x-event-type must equal signed event_id/event_type.
+Signatures are hex HMAC-SHA256(secret, timestamp + '.' + exact raw body), with header t=<seconds>,v1=<hex>. Freshness is checked on the signed t only (five minutes); x-timestamp carries the same value, unsigned, and is not checked; x-idempotency-key/x-event-type must equal signed event_id/event_type.
 
 A unique SQLite event id makes deduplication atomic. Commit precedes 200. Acknowledged rows survive restart and are projected into observations transactionally. Only allowlisted public business fields are persisted. Observations do not credit balances or settle money. Quickstart authorizes payment events by local payment ownership, even when customer_id is absent.
 

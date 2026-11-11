@@ -28,7 +28,7 @@ The callback is authenticated independently of the local Host/Origin guard. GET 
 
 ## How it was integrated
 
-The callback mounts express.raw before JSON parsing, refuses compressed bodies and limits size. Verification checks exact bytes using HMAC-SHA256 and a constant-time comparison. The signed timestamp must equal x-timestamp and be within five minutes. Signed event id/type must match their headers.
+The callback mounts express.raw before JSON parsing, refuses compressed bodies and limits size. Verification checks exact bytes using HMAC-SHA256 and a constant-time comparison. The signed t must be within five minutes; the unsigned x-timestamp header is not checked, and each retry is signed afresh. Signed event id/type must match their headers.
 
 A database uniqueness constraint deduplicates event_id atomically. Duplicates return 200; conflicting bodies for one id are rejected. Storage failures return 500 for retry. The worker resumes pending rows after restart; its example side effect is an observation row committed in the same transaction as the processed marker. Failed processing rolls back.
 
@@ -38,6 +38,7 @@ Inspect inbox and observations using a SQLite client. There is no event-list HTT
 
 ## Change log
 
+- 2026-11-11: Freshness is checked on the signed t only; x-timestamp is no longer required.
 - 2026-10-26: Initial raw-body verification, timestamp checks, persistent atomic deduplication and crash recovery example.
 
 - 2026-10-26: Added standalone Prettier formatting and ESLint configuration checks.

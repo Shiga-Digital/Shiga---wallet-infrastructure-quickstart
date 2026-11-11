@@ -60,38 +60,50 @@ describe('webhook authenticity and freshness', () => {
   it('verifies the exact raw bytes, including whitespace', () => {
     const now = Date.now(),
       time = Math.floor(now / 1000);
+    expect(() => verifyWebhook(secret, body, signature(body, time), now)).not.toThrow();
     expect(() =>
-      verifyWebhook(secret, body, signature(body, time), String(time), now),
-    ).not.toThrow();
-    expect(() =>
-      verifyWebhook(
-        secret,
-        Buffer.from(JSON.stringify(event)),
-        signature(body, time),
-        String(time),
-        now,
-      ),
+      verifyWebhook(secret, Buffer.from(JSON.stringify(event)), signature(body, time), now),
     ).toThrow();
   });
-  it.each(['missing', 'short-mac', 'timestamp-substitution', 'old', 'future', 'duplicate-fields'])(
-    'rejects %s',
-    (kind) => {
-      const now = Date.now(),
-        time = Math.floor(now / 1000),
-        signedTime = kind === 'old' ? time - 301 : kind === 'future' ? time + 301 : time;
-      const header =
-        kind === 'missing'
-          ? ''
-          : kind === 'short-mac'
-            ? 't=' + time + ',v1=ab'
-            : signature(body, signedTime) + (kind === 'duplicate-fields' ? ',t=' + time : '');
-      const timestamp = kind === 'timestamp-substitution' ? String(time + 1) : String(signedTime);
-      expect(() => verifyWebhook(secret, body, header, timestamp, now)).toThrow();
-    },
-  );
+  it.each(['missing', 'short-mac', 'old', 'future', 'duplicate-fields'])('rejects %s', (kind) => {
+    const now = Date.now(),
+      time = Math.floor(now / 1000),
+      signedTime = kind === 'old' ? time - 301 : kind === 'future' ? time + 301 : time;
+    const header =
+      kind === 'missing'
+        ? ''
+        : kind === 'short-mac'
+          ? 't=' + time + ',v1=ab'
+          : signature(body, signedTime) + (kind === 'duplicate-fields' ? ',t=' + time : '');
+    expect(() => verifyWebhook(secret, body, header, now)).toThrow();
+  });
 });
 
 describe('durable acknowledgement and processing', () => {
+  it('checks freshness on the signed t and ignores the unsigned x-timestamp header', async () => {
+    const store = new Store(':memory:');
+    try {
+      const { app } = setup(store);
+      const time = Math.floor(Date.now() / 1000);
+      const post = (signedTime: number, header?: string) => {
+        const call = request(app)
+          .post('/webhooks/wallet')
+          .set('Content-Type', 'application/json')
+          .set('x-signature', signature(body, signedTime))
+          .set('x-idempotency-key', event.event_id)
+          .set('x-event-type', event.event_type);
+        return (header === undefined ? call : call.set('x-timestamp', header)).send(
+          body.toString(),
+        );
+      };
+      expect((await post(time - 301, String(time))).status).toBe(400);
+      expect((await post(time, String(time - 3600))).status).toBe(200);
+      expect((await post(time)).status).toBe(200);
+      expect(store.db.prepare('SELECT count(*) AS count FROM inbox').get()?.count).toBe(1);
+    } finally {
+      store.close();
+    }
+  });
   it('stores before 2xx, deduplicates concurrent deliveries and applies one local observation', async () => {
     const store = new Store(':memory:');
     try {

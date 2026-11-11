@@ -13,7 +13,7 @@ export function webhookRoutes(inbox: Inbox, secret: string): Router {
     (req, res) => {
       if (!Buffer.isBuffer(req.body))
         throw new HttpError(415, 'json_required', 'Send an uncompressed application/json body.');
-      verifyWebhook(secret, req.body, req.get('x-signature') ?? '', req.get('x-timestamp') ?? '');
+      verifyWebhook(secret, req.body, req.get('x-signature') ?? '');
       const created = inbox.accept(
         req.body,
         req.get('x-idempotency-key') ?? '',
